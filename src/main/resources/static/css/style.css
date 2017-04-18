@@ -1,0 +1,16 @@
+hr.spacer-10 {
+  border: 0;
+  clear: both;
+  margin:0 0 10px;
+}
+hr.spacer-20 {
+  border: 0;
+  clear: both;
+  margin:0 0 20px;
+}
+.badge-info {
+  background-color: #3a87ad;
+}
+.badge-success {
+    background-color: #468847;
+}

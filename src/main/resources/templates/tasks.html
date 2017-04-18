@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pl-PL"
+      th:replace="fragments/main-layout :: main-layout(~{::title}, ~{}, ~{fragments/navigation::navigation}, ~{::main}, ~{fragments/footer::footer})"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="#{title.tasks}">Hello</title>
+</head>
+<body>
+<main>
+    <div class="panel panel-primary">
+        <div class="panel-heading" th:text="#{tasks.heading}">Tasks for today</div>
+        <div class="panel-body" th:if="${tasks.isEmpty()}">
+            <a href="#" role="button" class="btn btn-primary btn-sm" th:href="@{/add}">
+                <i class="glyphicon glyphicon-plus"></i>
+            </a>
+            <span th:text="#{tasks.allTasksDone}">
+                Well done! To add new task click plus button.
+            </span>
+        </div>
+        <ul th:each="task : ${tasks}" th:object="${task}" class="list-group">
+            <li class="list-group-item">
+                                <span th:switch="*{priority.priority}">
+                                    <span th:case="'High'" class="label label-danger pull-right"
+                                          th:text="${priorities[2].label}"></span>
+                                    <span th:case="'Medium'" class="label label-warning pull-right"
+                                          th:text="${priorities[1].label}"></span>
+                                    <span th:case="'Low'" class="label label-primary pull-right"
+                                          th:text="${priorities[0].label}"></span>
+                                </span>
+                <form th:action="@{/complete}" method="post">
+                    <input type="hidden" id="id" name="id" th:value="*{id}"/>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </button>
+                    <span th:text="*{description}"></span>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+</main>
+
+
+</body>
+</html>

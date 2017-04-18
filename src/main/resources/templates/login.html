@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl-PL"
+      th:replace="fragments/main-layout :: main-layout(~{::title}, ~{}, ~{::header}, ~{::main}, ~{})"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="#{title.login}">Login</title>
+</head>
+<body>
+<header>
+    <hr class="spacer-20">
+</header>
+<main>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading" th:text="#{login.heading}">Log in</div>
+                <div class="panel-body">
+                    <form th:action="@{/login}" method="post">
+                        <div class="form-group">
+                            <label for="username" th:text="#{label.login}">Login</label>
+                            <input class="form-control" type="text"
+                                   id="username"
+                                   name="username"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" th:text="#{label.password}">Password</label>
+                            <input class="form-control" type="password"
+                                   id="password"
+                                   name="password"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary" th:text="#{btn.login}">Log in</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div th:if="${param.error}" class="alert alert-warning" th:text="#{login.alert.incorrectCredentials}">Bad
+                credentials
+            </div>
+            <div th:if="${param.logout}" class="alert alert-info" th:text="#{login.alert.logout}">You have been logged
+                out.
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pl-PL"
+      th:replace="fragments/main-layout :: main-layout(~{::title}, ~{}, ~{fragments/admin-navigation::navigation}, ~{::main}, ~{fragments/footer::footer})"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="#{admin.title.userList}">Hello</title>
+</head>
+<body>
+<main>
+    <div th:if="${error}" class="alert alert-warning" th:text="#{admin.addUserError}">An error occurred while adding
+        user
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" th:text="#{admin.usersHeading}">
+            Users list
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>E-mail</th>
+                <th th:text="#{user.firstName}">First name</th>
+                <th th:text="#{user.lastName}">Last name</th>
+                <th th:text="#{label.edit}">Edit</th>
+                <th th:text="#{label.delete}">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${users}" th:object="${u}">
+                <td th:text="*{id}"></td>
+                <td th:text="*{email}"></td>
+                <td th:text="*{firstName}"></td>
+                <td th:text="*{lastName}"></td>
+                <td>
+                    <a href="#" th:href="@{/admin/user/edit(id=*{id})}">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <div th:if="${user.id} != *{id}">
+                        <form th:action="@{/admin/user/delete}" method="post">
+                            <input type="hidden" id="id" th:value="${u.id}" name="id"/>
+                            <button class="btn btn-primary btn-sm" type="submit">
+                                <i class="glyphicon glyphicon-remove"> </i>
+                            </button>
+                        </form>
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+
+</body>
+</html>

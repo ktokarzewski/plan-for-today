@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="main-layout(title,links,navigation,content,footer)">
+<head th:replace="fragments/head :: head(${title},${links})">
+    <title>Main layout title</title>
+</head>
+<body>
+<div class="container">
+    <header th:remove="tag">
+        <th:block th:replace="${navigation}"> Default navigation
+        </th:block>
+    </header>
+    <main th:remove="tag">
+        <th:block th:replace="${content}"> Default content
+        </th:block>
+    </main>
+    <footer th:remove="tag">
+        <th:block th:replace="${footer}"> Default footer
+        </th:block>
+    </footer>
+</div>
+</body>
+</html>

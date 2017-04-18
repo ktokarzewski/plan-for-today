@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pl-PL"
+      th:replace="fragments/main-layout :: main-layout(~{::title}, ~{}, ~{fragments/admin-navigation::navigation}, ~{::main}, ~{fragments/footer::footer})"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Hello</title>
+</head>
+<body>
+<main>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form th:action="@{/admin/user/__${type}__}" method="post" th:object="${newUser}">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="panel-group">
+                    <label>
+                        E-mail
+                        <span class="label label-info" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Password error</span>
+
+                    </label>
+                    <input type="email" class="form-control" th:field="*{email}">
+
+                </div>
+
+                <div class="panel-group">
+                    <label>
+                        <span th:text="#{user.firstName}">First name</span>
+                        <span class="label label-info" th:if="${#fields.hasErrors('firstName')}"
+                              th:errors="*{firstName}">Password error</span>
+                    </label>
+                    <input type="text" class="form-control" th:field="*{firstName}"/>
+                </div>
+                <div class="panel-group">
+                    <label>
+                        <span th:text="#{user.lastName}"></span>
+                        <span class="label label-info" th:if="${#fields.hasErrors('lastName')}"
+                              th:errors="*{lastName}">Password error</span>
+                    </label>
+                    <input type="text" class="form-control" th:field="*{lastName}"/>
+                </div>
+                <div class="panel-group">
+                    <label>
+                        <span th:text="#{label.password}">Password</span>
+                        <span class="label label-info" th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}">Password error</span>
+                    </label>
+                    <input type="password" class="form-control" th:field="*{password}"/>
+                </div>
+                <div class="panel-group">
+                    <label>
+                            <span th:text="#{label.confirmPassword}">
+                                Confirm password
+                            </span>
+                        <span class="label label-info" th:if="${passwordConfirmation}">Password doesn't match</span>
+                    </label>
+                    <input type="password" class="form-control" id="passwordConfirmation"
+                           name="passwordConfirmation"/>
+                </div>
+
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

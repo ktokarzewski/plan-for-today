@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl-PL"
+      th:replace="fragments/main-layout :: main-layout(~{::title}, ~{}, ~{fragments/navigation::navigation}, ~{::main}, ~{fragments/footer::footer})"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="#{title.addTask}">Add task</title>
+</head>
+<body>
+<main>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h5 th:text="#{task.addTaskHeading}">Add task</h5>
+        </div>
+        <div class="panel-body">
+            <form th:action="@{/task/save}" method="post">
+                <div th:object="${task}">
+                    <input type="hidden" id="owner" name="owner" th:value="${user.id}"/>
+                    <div class="form-group">
+                        <label th:text="#{label.description}">Description</label>
+                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                              class="label label-info"></span>
+                        <input class="form-control" type="text" th:field="*{description}" autofocus/>
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.priority}">Priority</label>
+                        <select th:field="*{priority}" class="form-control">
+                            <div th:each="priority : ${priorities}">
+                                <option th:text="${priority.label}" th:value="${priority.priority.id}"></option>
+                            </div>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label th:text="#{label.type}">Type</label>
+                        <select th:field="*{type}" class="form-control">
+                            <div th:each="type : ${types}">
+                                <option th:text="${type.label}" th:value="${type.type.id}"></option>
+                            </div>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary" th:text="#{btn.addTask}">Add task</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+
+</body>
+</html>

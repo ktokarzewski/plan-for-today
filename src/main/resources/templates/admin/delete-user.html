@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl-PL"
+      th:replace="fragments/main-layout :: main-layout(~{::title}, ~{}, ~{fragments/admin-navigation::navigation}, ~{::main}, ~{fragments/footer::footer})"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="#{title.deleteUser}">Delete</title>
+</head>
+<body>
+<div class="container">
+    <main>
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <span th:text="#{admin.delete.confirmHeading}">Confirm</span>
+                    <span th:text="${'[' + userToDelete.email + ']'}"></span>
+                </div>
+                <div class="panel-body">
+                    <span th:text="#{admin.delete.confirmDialog}">Deleting user:</span>
+                    <form method="post" th:action="@{/admin/user/deleteUser}" th:object="${userToDelete}">
+                        <input type="hidden" th:field="*{id}">
+                        <button type="submit" class="btn btn-danger" th:text="#{btn.delete}">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+</body>
+</html>
