@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import pl.com.tokarzewski.api.*;
 import pl.com.tokarzewski.authentication.EmailExistException;
 import pl.com.tokarzewski.domain.*;
-import pl.com.tokarzewski.services.LocaleService;
+import pl.com.tokarzewski.services.LocaleServiceImpl;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private UserService userService;
     private TaskTypeService taskTypeService;
     private PriorityService priorityService;
-    private LocaleService localeService;
+    private LocaleServiceImpl localeService;
 
     private TaskService taskService;
 
@@ -203,6 +203,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         taskService.create(task);
     }
+
     private void createUserTask() {
         Task task = new Task();
         task.setOwner(commonUser);
@@ -217,9 +218,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void createLocale() {
-        Locale pl = new Locale("pl");
         localeService.save(Locale.ENGLISH);
-        localeService.save(pl);
+        localeService.save(new Locale("pl"));
     }
 
     @Autowired
@@ -243,7 +243,7 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         this.taskService = taskService;
     }
     @Autowired
-    public void setLocaleService(LocaleService localeService) {
+    public void setLocaleService(LocaleServiceImpl localeService) {
         this.localeService = localeService;
     }
 }

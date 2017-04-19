@@ -1,5 +1,7 @@
 package pl.com.tokarzewski.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,7 @@ import pl.com.tokarzewski.api.ScoreService;
 import pl.com.tokarzewski.api.TaskService;
 import pl.com.tokarzewski.api.TaskTypeService;
 import pl.com.tokarzewski.dao.TaskRepository;
+import pl.com.tokarzewski.domain.Score;
 import pl.com.tokarzewski.domain.Task;
 import pl.com.tokarzewski.domain.TaskType;
 import pl.com.tokarzewski.domain.User;
@@ -17,7 +20,7 @@ import java.util.Collection;
 @Service
 @Profile("database")
 public class TaskServiceImpl implements TaskService {
-
+    private Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
     private TaskRepository taskRepository;
     private ScoreService scoreService;
     private TaskTypeService taskTypeService;
@@ -26,7 +29,6 @@ public class TaskServiceImpl implements TaskService {
     public Collection<Task> getUserTasks(User user) {
         return taskRepository.findAllByOwner(user);
     }
-
 
     @Override
     public Collection<Task> getTasksToComplete(User user) {
@@ -40,6 +42,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void create(Task task) {
+        scoreService.increaseMaxForToday(task.getOwner(), task.getPriority().getPoints());
         taskRepository.save(task);
     }
 
@@ -53,16 +56,6 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.save(task);
     }
 
-    @Transactional
-    @Override
-    public double getTodayProgress(User user) {
-        int total = taskRepository.findAllByOwnerAndExpired(user, false)
-                .stream()
-                .mapToInt(task -> task.getPriority().getPoints())
-                .sum();
-        return Math.floor(((double) scoreService.getUserScore(user).getDailyScore()) / ((double) total) * 100);
-    }
-
     @Override
     public Task getTaskById(long id) {
         return taskRepository.findOne(id);
@@ -70,7 +63,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteTask(long id) {
-        taskRepository.delete(id);
+        Task task = taskRepository.findOne(id);
+        if(!task.isDone()){
+            scoreService.decreaseMaxForToday(task.getOwner(),task.getPriority().getPoints());
+        }
+        taskRepository.delete(task);
     }
 
     @Override
@@ -106,8 +103,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public void deleteAllUserTasks(User user) {
-        Collection<Task> userTasks = getUserTasks(user);
-        taskRepository.delete(userTasks);
+        taskRepository.delete(getUserTasks(user));
     }
 
     @Autowired

@@ -13,9 +13,6 @@ public class User extends AbstractDomainObject {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private Collection<Task> tasks;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
@@ -23,14 +20,6 @@ public class User extends AbstractDomainObject {
     private String password;
     @Column(nullable = false)
     private String encryptedPassword;
-
-    public Collection<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(Collection<Task> tasks) {
-        this.tasks = tasks;
-    }
 
     public Collection<Role> getRoles() {
         return roles;

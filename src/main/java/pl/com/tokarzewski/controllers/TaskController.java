@@ -16,7 +16,7 @@ import pl.com.tokarzewski.api.TaskService;
 import pl.com.tokarzewski.api.TaskTypeService;
 import pl.com.tokarzewski.domain.Task;
 import pl.com.tokarzewski.domain.User;
-import pl.com.tokarzewski.services.LocaleService;
+import pl.com.tokarzewski.services.LocaleServiceImpl;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -28,13 +28,13 @@ public class TaskController {
     private TaskService taskService;
     private TaskTypeService taskTypeService;
     private PriorityService priorityService;
-    private LocaleService localeService;
 
     @RequestMapping(value = "/tasks", method = RequestMethod.GET)
     public String tasks(@ModelAttribute User user, Model model, Locale locale) {
         Collection<Task> tasks =
                 taskService
                         .getTasksToComplete(user);
+
         model.addAttribute("tasks", tasks);
         model.addAttribute("priorities", priorityService.findLocaleLabels(locale));
         return "tasks";
@@ -52,9 +52,6 @@ public class TaskController {
 
     @RequestMapping(value = "/edit/{id}")
     public String editTask(@PathVariable("id") long id, Model model, Locale locale) {
-        if (!localeService.isSupported(locale)) {
-            locale = Locale.ENGLISH;
-        }
         model.addAttribute("task", taskService.getTaskById(id));
         model.addAttribute("types", taskTypeService.findLocaleLabels(locale));
         model.addAttribute("priorities", priorityService.findLocaleLabels(locale));
@@ -71,9 +68,6 @@ public class TaskController {
 
     @RequestMapping(value = "/add")
     public String addNewTask(Model model, Locale locale) {
-        if (!localeService.isSupported(locale)) {
-            locale = Locale.ENGLISH;
-        }
         model.addAttribute("task", new Task());
         model.addAttribute("types", taskTypeService.findLocaleLabels(locale));
         model.addAttribute("priorities", priorityService.findLocaleLabels(locale));
@@ -123,10 +117,6 @@ public class TaskController {
     @Autowired
     public void setPriorityService(PriorityService priorityService) {
         this.priorityService = priorityService;
-    }
-    @Autowired
-    public void setLocaleService(LocaleService localeService) {
-        this.localeService = localeService;
     }
 
 }

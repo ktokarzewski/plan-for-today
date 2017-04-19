@@ -49,6 +49,41 @@ public class ScoreServiceImpl implements ScoreService {
         scoreRepository.save(scores);
     }
 
+    @Override
+    public void save(Score score) {
+        scoreRepository.save(score);
+    }
+
+    @Override
+    public void deleteUserScore(User user) {
+        Score userScore = getUserScore(user);
+        scoreRepository.delete(userScore);
+    }
+
+    @Override
+    public void increaseMaxForToday(User owner, int points) {
+        Score userScore = getUserScore(owner);
+        userScore.setMaxForToday(userScore.getMaxForToday() + points);
+
+        scoreRepository.save(userScore);
+    }
+
+
+    @Override
+    public double getUserProgress(User user) {
+        Score userScore = scoreRepository.findByOwner(user);
+        double dailyScore = userScore.getDailyScore();
+        double maxForToday = userScore.getMaxForToday();
+        return Math.floor(dailyScore / maxForToday * 100D);
+    }
+
+    @Override
+    public void decreaseMaxForToday(User owner, int points) {
+        Score userScore = getUserScore(owner);
+        userScore.setMaxForToday(userScore.getMaxForToday() - points);
+        scoreRepository.save(userScore);
+    }
+
     @Autowired
     public void setScoreRepository(ScoreRepository scoreRepository) {
         this.scoreRepository = scoreRepository;

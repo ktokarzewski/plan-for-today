@@ -89,7 +89,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/user/deleteUser", method = RequestMethod.POST)
     public String deleteUser(@ModelAttribute(value = "userToDelete") User user) {
-        userService.deleteUser(user); //FIXME
+        userService.deleteUser(user);
         return "redirect:/admin/users";
     }
 

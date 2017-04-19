@@ -20,7 +20,6 @@ import pl.com.tokarzewski.api.ScoreService;
 public class UserProfileController {
 
     private ScoreService scoreService;
-    private TaskService taskService;
     private UserToUserDto userToUserDto;
     private UserDtoToUser dtoToUser;
     private UserService userService;
@@ -28,7 +27,7 @@ public class UserProfileController {
     @RequestMapping
     public String getProfileDetails(@ModelAttribute User user, Model model) {
         model.addAttribute("score", scoreService.getUserScore(user));
-        model.addAttribute("progress", taskService.getTodayProgress(user));
+        model.addAttribute("progress", scoreService.getUserProgress(user));
         model.addAttribute("userToEdit", userToUserDto.convert(user));
         return "profile";
     }
@@ -61,10 +60,6 @@ public class UserProfileController {
     @Autowired
     public void setScoreService(ScoreService scoreService) {
         this.scoreService = scoreService;
-    }
-    @Autowired
-    public void setTaskService(TaskService taskService) {
-        this.taskService = taskService;
     }
     @Autowired
     public void setUserToUserDto(UserToUserDto userToUserDto) {

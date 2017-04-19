@@ -17,9 +17,6 @@ public interface TaskService {
 
     void completeTask(long taskId);
 
-    double getTodayProgress(User user);
-
-
     Task getTaskById(long id);
 
     void deleteTask(long id);

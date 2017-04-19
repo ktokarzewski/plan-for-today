@@ -3,6 +3,7 @@ package pl.com.tokarzewski.domain;
 import org.hibernate.validator.constraints.NotEmpty;
 import pl.com.tokarzewski.api.AbstractDomainObject;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;

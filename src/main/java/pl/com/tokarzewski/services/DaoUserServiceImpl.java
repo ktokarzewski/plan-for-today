@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import pl.com.tokarzewski.api.RoleService;
+import pl.com.tokarzewski.api.ScoreService;
 import pl.com.tokarzewski.api.TaskService;
 import pl.com.tokarzewski.api.UserService;
 import pl.com.tokarzewski.authentication.EmailExistException;
@@ -26,6 +27,7 @@ public class DaoUserServiceImpl implements UserService {
     private EncryptionService encryptionService;
     private RoleService roleService;
     private TaskService taskService;
+    private ScoreService scoreService;
 
     @Override
     public User findByEmail(String s) {
@@ -95,6 +97,7 @@ public class DaoUserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(User user) {
+        scoreService.deleteUserScore(user);
         taskService.deleteAllUserTasks(user);
         userRepository.delete(user);
     }
@@ -114,5 +117,9 @@ public class DaoUserServiceImpl implements UserService {
     @Autowired
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
+    }
+    @Autowired
+    public void setScoreService(ScoreService scoreService) {
+        this.scoreService = scoreService;
     }
 }

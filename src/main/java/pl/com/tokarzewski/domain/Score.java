@@ -2,6 +2,7 @@ package pl.com.tokarzewski.domain;
 
 import pl.com.tokarzewski.api.AbstractDomainObject;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -11,6 +12,7 @@ public class Score extends AbstractDomainObject {
     private User owner;
     private int dailyScore;
     private int totalScore;
+    private int maxForToday;
 
     public User getOwner() {
         return owner;
@@ -34,5 +36,13 @@ public class Score extends AbstractDomainObject {
 
     public void setTotalScore(int totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public int getMaxForToday() {
+        return maxForToday;
+    }
+
+    public void setMaxForToday(int maxForToday) {
+        this.maxForToday = maxForToday;
     }
 }
