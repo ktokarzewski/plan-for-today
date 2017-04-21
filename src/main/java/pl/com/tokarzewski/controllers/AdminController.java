@@ -34,7 +34,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/user/edit", method = RequestMethod.GET)
     public String editUser(@RequestParam(value = "id") long id, Model model) {
-        User user = userService.findById(id);
+        User user = userService.getById(id);
         model.addAttribute("newUser", userToUserDto.convert(user));
         model.addAttribute("type", "update");
         return "admin/user-form";
@@ -43,11 +43,11 @@ public class AdminController {
     @RequestMapping(value = "/admin/user/update")
     public String updateUser(
             @ModelAttribute("newUser") UserDto user) {
-        userService.updateUser(userDtoToUser.convert(user));
+        userService.update(userDtoToUser.convert(user));
         return "redirect:/admin/users";
     }
 
-    @RequestMapping(value = "/admin/user/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
     public String saveUser(
             @ModelAttribute("passwordConfirmation") String passwordConfirmation,
             @ModelAttribute("newUser") @Valid UserDto newUser,
@@ -76,20 +76,20 @@ public class AdminController {
     @RequestMapping(value = "/admin/user/add", method = RequestMethod.GET)
     public String addNewUser(Model model) {
         model.addAttribute("newUser", new UserDto());
-        model.addAttribute("type", "save");
+        model.addAttribute("type", "create");
         return "admin/user-form";
     }
 
 
     @RequestMapping(value = "/admin/user/delete", method = RequestMethod.POST)
     public String confirmUserDelete(@ModelAttribute User user, Model model) {
-        model.addAttribute("userToDelete", userService.findById(user.getId()));
+        model.addAttribute("userToDelete", userService.getById(user.getId()));
         return "admin/delete-user";
     }
 
     @RequestMapping(value = "/admin/user/deleteUser", method = RequestMethod.POST)
     public String deleteUser(@ModelAttribute(value = "userToDelete") User user) {
-        userService.deleteUser(user);
+        userService.delete(user.getId());
         return "redirect:/admin/users";
     }
 

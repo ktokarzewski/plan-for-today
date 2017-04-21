@@ -7,9 +7,10 @@ import pl.com.tokarzewski.api.RoleService;
 import pl.com.tokarzewski.dao.RoleRepository;
 import pl.com.tokarzewski.domain.Role;
 
-@Profile("database")
+import java.util.Collection;
+
 @Service
-public class DaoRoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements RoleService {
 
     private RoleRepository roleRepository;
 
@@ -19,9 +20,20 @@ public class DaoRoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void save(Role role) {
-        roleRepository.save(role);
+    public Role getUserRole() {
+        return roleRepository.findByName("USER_ROLE");
     }
+
+    @Override
+    public Role getAdminRole() {
+        return roleRepository.findByName("ADMIN_ROLE");
+    }
+
+    @Override
+    public Role create(Role role) {
+        return roleRepository.save(role);
+    }
+
 
     @Override
     public Role createIfNotExist(String roleName) {

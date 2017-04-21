@@ -16,7 +16,6 @@ import pl.com.tokarzewski.api.TaskService;
 import pl.com.tokarzewski.api.TaskTypeService;
 import pl.com.tokarzewski.domain.Task;
 import pl.com.tokarzewski.domain.User;
-import pl.com.tokarzewski.services.LocaleServiceImpl;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -52,7 +51,7 @@ public class TaskController {
 
     @RequestMapping(value = "/edit/{id}")
     public String editTask(@PathVariable("id") long id, Model model, Locale locale) {
-        model.addAttribute("task", taskService.getTaskById(id));
+        model.addAttribute("task", taskService.getById(id));
         model.addAttribute("types", taskTypeService.findLocaleLabels(locale));
         model.addAttribute("priorities", priorityService.findLocaleLabels(locale));
 
@@ -61,7 +60,7 @@ public class TaskController {
 
     @RequestMapping(value = "/task/delete")
     public String deleteTask(@ModelAttribute("task") Task task) {
-        taskService.deleteTask(task.getId());
+        taskService.delete(task.getId());
         return "redirect:/tasks";
     }
 
@@ -75,7 +74,7 @@ public class TaskController {
         return "add-task";
     }
 
-    @RequestMapping(value = "/task/save")
+    @RequestMapping(value = "/task/create")
     public String addNewTask(
             @ModelAttribute("task") @Valid Task task,
             BindingResult bindingResult,
@@ -95,7 +94,7 @@ public class TaskController {
     public String updateTask(
             @ModelAttribute("task") Task task) {
 
-        taskService.updateTask(task);
+        taskService.update(task);
         return "redirect:/tasks/manage";
     }
 

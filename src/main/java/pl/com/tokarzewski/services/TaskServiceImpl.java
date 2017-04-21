@@ -41,9 +41,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void create(Task task) {
+    public Task create(Task task) {
         scoreService.increaseMaxForToday(task.getOwner(), task.getPriority().getPoints());
-        taskRepository.save(task);
+        return taskRepository.save(task);
     }
 
     @Transactional
@@ -57,12 +57,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task getTaskById(long id) {
+    public Collection<Task> findAll() {
+        return taskRepository.findAll();
+    }
+
+    @Override
+    public Task getById(long id) {
         return taskRepository.findOne(id);
     }
 
     @Override
-    public void deleteTask(long id) {
+    public void delete(long id) {
         Task task = taskRepository.findOne(id);
         if(!task.isDone()){
             scoreService.decreaseMaxForToday(task.getOwner(),task.getPriority().getPoints());
@@ -71,12 +76,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public Task update(Task task) {
         Task t = taskRepository.findOne(task.getId());
         t.setPriority(task.getPriority());
         t.setType(task.getType());
         t.setDescription(task.getDescription());
-        taskRepository.save(t);
+        return taskRepository.save(t);
     }
 
     @Transactional

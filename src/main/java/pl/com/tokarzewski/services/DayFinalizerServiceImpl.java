@@ -19,7 +19,7 @@ import java.util.Collection;
 @Component
 public class DayFinalizerServiceImpl implements DayFinalizerService {
 
-    Logger logger = LoggerFactory.getLogger(DayFinalizerServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(DayFinalizerServiceImpl.class);
     private TaskService taskService;
 
     private ScoreService scoreRepository;
@@ -36,7 +36,7 @@ public class DayFinalizerServiceImpl implements DayFinalizerService {
     }
 
     @Transactional
-    public void expireAllTasks() {
+    private void expireAllTasks() {
         TaskType singleTask = taskTypeService.getSingleTask();
 
         Collection<Task> tasks = taskService.
@@ -56,7 +56,7 @@ public class DayFinalizerServiceImpl implements DayFinalizerService {
     private void resetDailyScore() {
         Collection<Score> allScores = scoreRepository.findAll();
         allScores.forEach(score -> score.setDailyScore(0));
-        scoreRepository.save(allScores);
+        scoreRepository.updateAll(allScores);
     }
 
     @Autowired

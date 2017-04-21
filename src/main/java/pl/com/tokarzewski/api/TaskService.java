@@ -6,22 +6,16 @@ import pl.com.tokarzewski.domain.User;
 
 import java.util.Collection;
 
-public interface TaskService {
+public interface TaskService extends CRUDService<Task> {
     Collection<Task> getUserTasks(User user);
 
     Collection<Task> getTasksToComplete(User user);
 
     Collection<Task> getTasksByType(TaskType taskType);
 
-    void create(Task task);
+    Task create(Task task);
 
     void completeTask(long taskId);
-
-    Task getTaskById(long id);
-
-    void deleteTask(long id);
-
-    void updateTask(Task task);
 
     Collection<Task> getActiveTasks(User user);
 

@@ -45,13 +45,28 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public void save(Collection<Score> scores) {
+    public Score getById(long id) {
+        return scoreRepository.findOne(id);
+    }
+
+    @Override
+    public void updateAll(Collection<Score> scores) {
         scoreRepository.save(scores);
     }
 
     @Override
-    public void save(Score score) {
-        scoreRepository.save(score);
+    public Score create(Score score) {
+        return scoreRepository.save(score);
+    }
+
+    @Override
+    public Score update(Score score) {
+        return null;
+    }
+
+    @Override
+    public void delete(long id) {
+
     }
 
     @Override

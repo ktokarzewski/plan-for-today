@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+
 @ConfigurationProperties
 @Component
 public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
@@ -23,6 +24,8 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private String adminPassword;
     @Value("${admin.login}")
     private String adminLogin;
+    @Value("${bootstrap.init.database}")
+    private boolean initialize;
 
     private RoleService roleService;
     private UserService userService;
@@ -45,14 +48,16 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        setupUsers();
-        createPriorities();
-        createPriorityLabels();
-        createTaskTypes();
-        createTaskLabels();
-        createAdminTask();
-        createUserTask();
-        createLocale();
+        if (initialize) {
+            setupUsers();
+            createPriorities();
+            createPriorityLabels();
+            createTaskTypes();
+            createTaskLabels();
+            createAdminTask();
+            createUserTask();
+            createLocale();
+        }
     }
 
     private void setupUsers() {
@@ -226,22 +231,27 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
     }
+
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
     @Autowired
     public void setTaskTypeService(TaskTypeService taskTypeService) {
         this.taskTypeService = taskTypeService;
     }
+
     @Autowired
     public void setPriorityService(PriorityService priorityService) {
         this.priorityService = priorityService;
     }
+
     @Autowired
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
+
     @Autowired
     public void setLocaleService(LocaleServiceImpl localeService) {
         this.localeService = localeService;

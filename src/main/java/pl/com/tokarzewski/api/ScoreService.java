@@ -7,16 +7,12 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 
-public interface ScoreService {
+public interface ScoreService extends CRUDService<Score>{
     void updateUserScore(User user, int points);
 
     Score getUserScore(User user);
 
-    Collection<Score> findAll();
-
-    void save(Collection<Score> scores);
-
-    void save(Score score);
+    void updateAll(Collection<Score> scores);
 
     @Transactional
     void deleteUserScore(User user);

@@ -11,17 +11,14 @@ import pl.com.tokarzewski.authentication.EmailExistException;
 import pl.com.tokarzewski.authentication.EncryptionService;
 import pl.com.tokarzewski.dao.UserRepository;
 import pl.com.tokarzewski.domain.Role;
-import pl.com.tokarzewski.domain.Task;
 import pl.com.tokarzewski.domain.User;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 @Profile("database")
 @Service
-public class DaoUserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private EncryptionService encryptionService;
@@ -38,7 +35,7 @@ public class DaoUserServiceImpl implements UserService {
     @Override
     public void createUserAccount(User user) throws EmailExistException {
         if (userRepository.findByEmail(user.getEmail()) == null) {
-            Role userRole = roleService.findByName("ROLE_USER");
+            Role userRole = roleService.getUserRole();
             user.getRoles().add(userRole);
             create(user);
         } else {
@@ -48,17 +45,17 @@ public class DaoUserServiceImpl implements UserService {
 
 
     @Override
-    public void create(User user) {
+    public User create(User user) {
         if (user.getPassword() != null) {
             user.setEncryptedPassword(encryptionService.encrypt(user.getPassword()));
             user.setPassword(null);
         }
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
-    public void updateUser(User user) {
-        User u = findById(user.getId());
+    public User update(User user) {
+        User u = getById(user.getId());
         if (user.getEmail() == null) {
             user.setEmail(u.getEmail());
         }
@@ -80,7 +77,7 @@ public class DaoUserServiceImpl implements UserService {
             user.setLastName(u.getLastName());
         }
 
-        create(user);
+       return create(user);
     }
 
     @Transactional
@@ -90,13 +87,14 @@ public class DaoUserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(long id) {
+    public User getById(long id) {
         return userRepository.findOne(id);
     }
 
     @Transactional
     @Override
-    public void deleteUser(User user) {
+    public void delete(long id) {
+        User user = getById(id);
         scoreService.deleteUserScore(user);
         taskService.deleteAllUserTasks(user);
         userRepository.delete(user);

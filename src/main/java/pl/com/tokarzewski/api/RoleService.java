@@ -3,10 +3,14 @@ package pl.com.tokarzewski.api;
 
 import pl.com.tokarzewski.domain.Role;
 
-public interface RoleService {
+public interface RoleService{
     Role findByName(String name);
 
-    void save(Role role);
+    Role getUserRole();
+
+    Role getAdminRole();
+
+    Role create(Role role);
 
     Role createIfNotExist(String roleName);
 

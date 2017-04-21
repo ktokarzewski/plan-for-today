@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.com.tokarzewski.api.TaskService;
 import pl.com.tokarzewski.api.UserService;
 import pl.com.tokarzewski.converters.user.UserDtoToUser;
 import pl.com.tokarzewski.converters.user.UserToUserDto;
@@ -34,7 +33,7 @@ public class UserProfileController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String updateUser(@ModelAttribute("userToEdit") UserDto userDto) {
-        userService.updateUser(dtoToUser.convert(userDto));
+        userService.update(dtoToUser.convert(userDto));
         return "redirect:";
     }
 
@@ -50,7 +49,7 @@ public class UserProfileController {
     @RequestMapping(value = "/password/update", method = RequestMethod.POST)
     public String updatePassword(@ModelAttribute("userToEdit") UserDto user) {
         if (user.getPassword().equals(user.getPasswordConfirmation())) {
-            userService.updateUser(dtoToUser.convert(user));
+            userService.update(dtoToUser.convert(user));
             return "redirect:/profile";
         } else {
             return "redirect:/profile/password/change?error";
