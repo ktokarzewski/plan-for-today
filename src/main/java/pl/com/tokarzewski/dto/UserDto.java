@@ -3,17 +3,21 @@ package pl.com.tokarzewski.dto;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import pl.com.tokarzewski.validation.PasswordMatch;
+import pl.com.tokarzewski.validation.UniqueEmail;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
-
-
-public class UserDto {
+import java.io.Serializable;
+@PasswordMatch
+public class UserDto implements Serializable{
     private long id;
     @Email
     @NotEmpty
+    @UniqueEmail
     private String email;
 
-    @Size(min = 8, message = "Password is to short")
+    @Size(min = 8, message = "{pl.com.tokarzewski.validation.passwordConstraints.message}")
     private String password;
     private String passwordConfirmation;
     private String firstName;

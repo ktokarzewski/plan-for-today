@@ -47,13 +47,11 @@
                 </div>
                 <div class="panel-group">
                     <label>
-                            <span th:text="#{label.confirmPassword}">
-                                Confirm password
-                            </span>
-                        <span class="label label-info" th:if="${passwordConfirmation}">Password doesn't match</span>
+                        <span th:text="#{label.confirmPassword}">Confirm password</span>
+                        <span class="label label-info" th:if="${#fields.hasErrors('global')}"
+                              th:errors="*{global}">Password doesn't match</span>
                     </label>
-                    <input type="password" class="form-control" id="passwordConfirmation"
-                           name="passwordConfirmation"/>
+                    <input  class="form-control" type="password" th:field="*{passwordConfirmation}"/>
                 </div>
 
 

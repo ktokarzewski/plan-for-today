@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import pl.com.tokarzewski.api.UserService;
 import pl.com.tokarzewski.authentication.EmailExistException;
 import pl.com.tokarzewski.converters.user.UserDtoToUser;
@@ -49,19 +46,12 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
     public String saveUser(
-            @ModelAttribute("passwordConfirmation") String passwordConfirmation,
             @ModelAttribute("newUser") @Valid UserDto newUser,
-            BindingResult bindingResult) {
-
-        if (!newUser.getPassword().equals(passwordConfirmation)) {
-            ObjectError error = new ObjectError(
-                    "passwordConfirmation",
-                    "Password doesn't match");
-
-            bindingResult.addError(error);
-        }
+            BindingResult bindingResult,
+            Model model) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("type","create");
             return "admin/user-form";
         }
         try {
