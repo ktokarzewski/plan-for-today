@@ -8,15 +8,16 @@
 <body>
 <main>
     <div class="panel panel-primary">
-        <div class="panel-heading" th:text="#{tasks.editHeading}">Edit tasks</div>
+        <div class="panel-heading" th:text="#{tasks.completedHeading}">Completed tasks</div>
         <div class="panel-body" th:if="${tasks.isEmpty()}">
-            <span th:text="#{tasks.emptyTaskList}">
-                No tasks to edit
+            <span th:text="#{tasks.noTasksDone}">
+                You didn't complete any task.
             </span>
         </div>
         <ul class="list-group">
             <li class="list-group-item" th:each="task : ${tasks}" th:object="${task}">
-                                <span th:switch="*{priority.priority}" th:remove="tag">
+                <span th:text="*{description}" th:remove="tag"></span>
+                <span th:switch="*{priority.priority}" th:remove="tag">
                                     <span th:case="'High'" class="label label-danger pull-right"
                                           th:text="${priorities[2].label}"></span>
                                     <span th:case="'Medium'" class="label label-warning pull-right"
@@ -24,14 +25,6 @@
                                     <span th:case="'Low'" class="label label-primary pull-right"
                                           th:text="${priorities[0].label}"></span>
                                 </span>
-
-                <form th:action="@{/edit/__*{id}__}" method="post">
-                    <input type="hidden" id="id" name="id" th:value="*{id}"/>
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                    </button>
-                    <span th:text="*{description}" th:remove="tag"></span>
-                </form>
             </li>
         </ul>
     </div>

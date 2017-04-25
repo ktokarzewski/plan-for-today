@@ -24,4 +24,6 @@ public interface TaskService extends CRUDService<Task> {
     Collection<Task> getExpiredTasks(TaskType type);
 
     void deleteAllUserTasks(User user);
+
+    Collection<Task> getCompletedTasks(User user);
 }

@@ -46,8 +46,8 @@
                     <li>
                         <a href="#" th:href="@{/tasks/manage}" th:text="#{nav.manage}">Settings</a>
                     </li>
-                    <li class="disabled ">
-                        <a href="#" th:text="#{nav.doneTasks}">History</a>
+                    <li>
+                        <a href="#" th:text="#{nav.doneTasks}" th:href="@{/tasks/completed}">History</a>
                     </li>
 
                 </ul>

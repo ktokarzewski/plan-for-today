@@ -111,6 +111,11 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.delete(getUserTasks(user));
     }
 
+    @Override
+    public Collection<Task> getCompletedTasks(User user) {
+        return taskRepository.findAllByOwnerAndDone(user,true);
+    }
+
     @Autowired
     public void setTaskRepository(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;

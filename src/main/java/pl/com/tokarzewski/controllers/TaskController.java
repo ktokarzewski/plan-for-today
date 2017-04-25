@@ -74,7 +74,7 @@ public class TaskController {
         return "add-task";
     }
 
-    @RequestMapping(value = "/task/create")
+    @RequestMapping(value = "/task/save")
     public String addNewTask(
             @ModelAttribute("task") @Valid Task task,
             BindingResult bindingResult,
@@ -88,6 +88,14 @@ public class TaskController {
 
         taskService.create(task);
         return "redirect:/tasks";
+    }
+
+    @RequestMapping(value = "/tasks/completed")
+    public String showCompletedTasks(Model model, @ModelAttribute User user, Locale locale){
+        model.addAttribute("tasks",taskService.getCompletedTasks(user));
+        model.addAttribute("types", taskTypeService.findLocaleLabels(locale));
+        model.addAttribute("priorities", priorityService.findLocaleLabels(locale));
+        return "completed";
     }
 
     @RequestMapping(value = "/task/update")

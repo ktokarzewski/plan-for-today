@@ -17,9 +17,9 @@
                 Well done! To add new task click plus button.
             </span>
         </div>
-        <ul th:each="task : ${tasks}" th:object="${task}" class="list-group">
-            <li class="list-group-item">
-                                <span th:switch="*{priority.priority}">
+        <ul class="list-group">
+            <li class="list-group-item" th:each="task : ${tasks}" th:object="${task}" >
+                                <span th:switch="*{priority.priority}" th:remove="tag">
                                     <span th:case="'High'" class="label label-danger pull-right"
                                           th:text="${priorities[2].label}"></span>
                                     <span th:case="'Medium'" class="label label-warning pull-right"
@@ -32,7 +32,7 @@
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="glyphicon glyphicon-ok"></i>
                     </button>
-                    <span th:text="*{description}"></span>
+                    <span th:text="*{description}" th:remove="tag"></span>
                 </form>
             </li>
         </ul>

@@ -21,12 +21,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getUserRole() {
-        return roleRepository.findByName("USER_ROLE");
+        return roleRepository.findByName("ROLE_USER");
     }
 
     @Override
     public Role getAdminRole() {
-        return roleRepository.findByName("ADMIN_ROLE");
+        return roleRepository.findByName("ROLE_ADMIN");
     }
 
     @Override
