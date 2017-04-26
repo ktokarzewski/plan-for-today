@@ -33,7 +33,6 @@ public class TaskController {
         Collection<Task> tasks =
                 taskService
                         .getTasksToComplete(user);
-
         model.addAttribute("tasks", tasks);
         model.addAttribute("priorities", priorityService.findLocaleLabels(locale));
         return "tasks";
@@ -49,7 +48,7 @@ public class TaskController {
         return "tasks-manage";
     }
 
-    @RequestMapping(value = "/edit/{id}")
+    @RequestMapping(value = "/task/edit/{id}")
     public String editTask(@PathVariable("id") long id, Model model, Locale locale) {
         model.addAttribute("task", taskService.getById(id));
         model.addAttribute("types", taskTypeService.findLocaleLabels(locale));
@@ -65,7 +64,7 @@ public class TaskController {
     }
 
 
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/task/add")
     public String addNewTask(Model model, Locale locale) {
         model.addAttribute("task", new Task());
         model.addAttribute("types", taskTypeService.findLocaleLabels(locale));
@@ -74,7 +73,7 @@ public class TaskController {
         return "add-task";
     }
 
-    @RequestMapping(value = "/task/save")
+    @RequestMapping(value = "/task/save", method = RequestMethod.POST)
     public String addNewTask(
             @ModelAttribute("task") @Valid Task task,
             BindingResult bindingResult,
@@ -98,7 +97,7 @@ public class TaskController {
         return "completed";
     }
 
-    @RequestMapping(value = "/task/update")
+    @RequestMapping(value = "/task/update",method = RequestMethod.POST)
     public String updateTask(
             @ModelAttribute("task") Task task) {
 
@@ -106,7 +105,7 @@ public class TaskController {
         return "redirect:/tasks/manage";
     }
 
-    @RequestMapping(value = "/complete")
+    @RequestMapping(value = "/task/complete")
     public String completeTask(@ModelAttribute("task") Task task) {
         taskService.completeTask(task.getId());
         return "redirect:/tasks";

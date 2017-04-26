@@ -25,7 +25,7 @@
                                           th:text="${priorities[0].label}"></span>
                                 </span>
 
-                <form th:action="@{/edit/__*{id}__}" method="post">
+                <form th:action="@{/task/edit/__*{id}__}" method="post">
                     <input type="hidden" id="id" name="id" th:value="*{id}"/>
                     <button type="submit" class="btn btn-primary btn-sm">
                         <i class="glyphicon glyphicon-pencil"></i>
